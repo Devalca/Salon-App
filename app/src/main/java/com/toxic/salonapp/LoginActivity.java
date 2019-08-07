@@ -73,12 +73,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                 String errorMessage = task.getException().getMessage();
                                 Toast.makeText(LoginActivity.this, "Error : " + errorMessage, Toast.LENGTH_LONG).show();
-
-
                             }
 
                             loginProgress.setVisibility(View.INVISIBLE);
-
                         }
                     });
 
@@ -87,27 +84,18 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         if(currentUser != null){
-
             sendToMain();
-
         }
-
-
     }
 
     private void sendToMain() {
-
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
         finish();

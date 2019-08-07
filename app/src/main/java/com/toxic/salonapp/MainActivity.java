@@ -30,12 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     private String current_user_id;
 
-    private FloatingActionButton addPostBtn;
-
-    private BottomNavigationView mainbottomNav;
-
     private HomeFragment homeFragment;
     private AccountFragment accountFragment;
+    private FloatingActionButton addPostBtn;
+    private BottomNavigationView mainbottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                         default:
                             return false;
-
-
                     }
-
                 }
             });
 
@@ -96,10 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
         }
-
-
     }
 
     @Override
@@ -112,9 +104,8 @@ public class MainActivity extends AppCompatActivity {
             sendToLogin();
 
         } else {
-
+            // lupa mau di isi apaan
         }
-
     }
 
 
@@ -142,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
 
-
             default:
                 return false;
 
@@ -153,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void logOut() {
 
-
         mAuth.signOut();
         sendToLogin();
     }
@@ -163,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
         finish();
-
     }
 
     private void initializeFragment(){
@@ -175,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.hide(accountFragment);
 
-        fragmentTransaction.commit();
+        fragmentTranlupa mau di isi apaansaction.commit();
 
     }
 
@@ -196,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.show(fragment);
 
-        //fragmentTransaction.replace(R.id.main_container, fragment);
         fragmentTransaction.commit();
 
     }
