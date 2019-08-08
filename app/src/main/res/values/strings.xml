@@ -27,4 +27,5 @@
     <string name="nama_salon">Nama Salon</string>
     <string name="nomor_whatsapp">Nomor Whatsapp</string>
     <string name="lokasi">Lokasi Anda</string>
+    <string name="update_data">Update Data</string>
 </resources>

@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class UserActivity extends AppCompatActivity {
 
-    private Button mButton, lButton;
+    private Button mButton, login_reg_btn;
     private FirebaseAuth mAuth;
 
 
@@ -23,8 +23,8 @@ public class UserActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        lButton = findViewById(R.id.btn_map);
-        lButton.setOnClickListener(new View.OnClickListener() {
+        login_reg_btn = findViewById(R.id.login_reg_btn);
+        login_reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

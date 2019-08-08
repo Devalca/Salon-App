@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.hide(accountFragment);
 
-        fragmentTranlupa mau di isi apaansaction.commit();
+        fragmentTransaction.commit();
 
     }
 
