@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -23,9 +24,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +51,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -61,7 +66,8 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
     private ImageView newPostImage;
     private EditText newPostDesc;
-    private Button newPostBtn;
+    private Button newPostBtn, newPostBtnSpa, newPostBtnfac, upDefault, upSpa, upFacial;
+    private ConstraintLayout halRambut, halSpa, halFacial;
 
     private Uri postImageUri = null;
 
@@ -74,8 +80,9 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
     private String current_user_id;
 
     private Bitmap compressedImageFile;
+    private CheckBox Dewasa, Anak;
+    private TextView lokasiDirect, pilka;
 
-    private TextView lokasiDirect;
     LocationManager locationManager;
 
     @Override
@@ -84,23 +91,62 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         setContentView(R.layout.activity_new_post);
 
         storageReference = FirebaseStorage.getInstance().getReference();
-        firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
         current_user_id = firebaseAuth.getCurrentUser().getUid();
 
         newPostToolbar = findViewById(R.id.new_post_toolbar);
         setSupportActionBar(newPostToolbar);
-        getSupportActionBar().setTitle("Add New Post");
+        getSupportActionBar().setTitle("Update Data Baru");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        halFacial = findViewById(R.id.hal_facial);
+        halRambut = findViewById(R.id.hal_rambut);
+        halSpa = findViewById(R.id.hal_spa);
+
         newPostImage = findViewById(R.id.new_post_image);
-        newPostDesc = findViewById(R.id.new_post_desc);
         newPostBtn = findViewById(R.id.post_btn);
+        newPostBtnSpa = findViewById(R.id.post_btn_spa);
+        newPostBtnfac = findViewById(R.id.post_btn_facial);
+        upDefault = findViewById(R.id.up_default);
+        upSpa = findViewById(R.id.up_spa);
+        upFacial = findViewById(R.id.up_facial);
         newPostProgress = findViewById(R.id.new_post_progress);
 
+        Dewasa = findViewById(R.id.cekDewasa);
+        Anak = findViewById(R.id.cekAnak);
+
         lokasiDirect = findViewById(R.id.lokasiDirect);
+        pilka = findViewById(R.id.pilka);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        upDefault.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                halFacial.setVisibility(v.INVISIBLE);
+                halSpa.setVisibility(v.INVISIBLE);
+                halRambut.setVisibility(v.VISIBLE);
+            }
+        });
+
+        upSpa.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                halFacial.setVisibility(v.INVISIBLE);
+                halSpa.setVisibility(v.VISIBLE);
+                halRambut.setVisibility(v.INVISIBLE);
+            }
+        });
+
+        upFacial.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                halFacial.setVisibility(v.VISIBLE);
+                halSpa.setVisibility(v.INVISIBLE);
+                halRambut.setVisibility(v.INVISIBLE);
+            }
+        });
+
 
         if (ContextCompat.checkSelfPermission(NewPostActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -246,6 +292,36 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
 
     }
+
+    public void onCekClicked(View view) {
+        // Is the button now checked?
+           switch(view.getId()) {
+            case R.id.cekDewasa:
+                if (Anak.isChecked()){
+                    Anak.setChecked(false);
+                    String txtDewasa = Dewasa.getText().toString();
+                    Toast.makeText(this, txtDewasa, Toast.LENGTH_SHORT).show();
+                    pilka.setText(txtDewasa);
+                }
+            else
+                    Dewasa.setChecked(true);
+                break;
+
+            case R.id.cekAnak:
+                if (Dewasa.isChecked()){
+                   Dewasa.setChecked(false);
+                    String txtAnak = Anak.getText().toString();
+                    Toast.makeText(this, txtAnak, Toast.LENGTH_SHORT).show();
+                    pilka.setText(txtAnak);
+                }
+
+            else
+                Anak.setChecked(true);
+                break;
+
+        }
+    }
+
 
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

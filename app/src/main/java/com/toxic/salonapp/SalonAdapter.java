@@ -42,18 +42,6 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.MyViewHolder
         holder.blogDate.setText(mData.get(position).getLokasi_direct());
         Glide.with(mContext).load(mData.get(position).getImage_url()).into(holder.blogImage);
 
-
-//        final String currentUserId = firebaseAuth.getCurrentUser().getUid();
-//
-//        String desc_data = blog_list.get(position).getDesc();
-//        holder.setDescText(desc_data);
-//
-//        String image_url = blog_list.get(position).getImage_url();
-//        String thumbUri = blog_list.get(position).getImage_thumb();
-//        holder.setBlogImage(image_url, thumbUri);
-//
-//        String user_id = blog_list.get(position).getUser_id();
-
     }
 
     @Override
@@ -87,13 +75,9 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.MyViewHolder
                     postDetailActivity.putExtra("desc",mData.get(position).getDesc());
                     postDetailActivity.putExtra("loklok", mData.get(position).getLokasi_direct());
                     postDetailActivity.putExtra("postKey",mData.get(position).getPostKey());
-                    // will fix this later i forgot to add user name to post object
-                    //postDetailActivity.putExtra("userName",mData.get(position).getUsername);
                     long timestamp  = (long) mData.get(position).getTimeStamp();
                     postDetailActivity.putExtra("timestamp",timestamp) ;
                     mContext.startActivity(postDetailActivity);
-
-
 
                 }
             });

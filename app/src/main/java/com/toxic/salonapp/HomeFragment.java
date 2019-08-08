@@ -24,17 +24,13 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
 
     RecyclerView postRecyclerView ;
     SalonAdapter postAdapter ;
@@ -42,13 +38,9 @@ public class HomeFragment extends Fragment {
     DatabaseReference databaseReference ;
     List<SalonPost> postList;
 
-
-
-
     public HomeFragment() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -94,8 +86,6 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // Get List Posts from the database
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,15 +95,10 @@ public class HomeFragment extends Fragment {
 
                    SalonPost post = postsnap.getValue(SalonPost.class);
                     postList.add(post) ;
-
-
-
                 }
 
                 postAdapter = new SalonAdapter(getActivity(),postList);
                 postRecyclerView.setAdapter(postAdapter);
-
-
             }
 
             @Override
@@ -121,9 +106,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -143,7 +125,6 @@ public class HomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

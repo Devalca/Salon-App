@@ -20,32 +20,38 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/salonpas" />
 
+
     <Button
-        android:id="@+id/btn_map"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_list_map"
+        android:layout_width="280dp"
+        android:layout_height="55dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="152dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#FF6C22"
-        android:text="Lokasi dan Peta"
+        android:text="Mencari Salon"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regPageLogo" />
 
     <Button
-        android:id="@+id/btn_list_map"
-        android:layout_width="250dp"
+        android:id="@+id/login_reg_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#FF6C22"
-        android:textColor="@android:color/white"
-        android:text="List Salon"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@android:color/white"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:text="Login/Daftar Salon"
+        android:textAllCaps="false"
+        android:textColor="#FF6C22"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_map" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
