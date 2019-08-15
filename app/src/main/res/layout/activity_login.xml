@@ -86,7 +86,7 @@
         android:backgroundTint="@android:color/white"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:text="@string/login_reg_btn_text"
+        android:text="Buat Akun"
         android:textAllCaps="false"
         android:textColor="#FF6C22"
         android:textSize="18sp"

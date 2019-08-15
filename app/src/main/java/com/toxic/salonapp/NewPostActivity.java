@@ -28,7 +28,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,28 +59,29 @@ import java.util.UUID;
 import id.zelory.compressor.Compressor;
 
 public class NewPostActivity extends AppCompatActivity implements LocationListener {
+    private static final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1 ;
     private int GPS_PERMISSION_CODE = 1;
 
     private Toolbar newPostToolbar;
 
-    private ImageView newPostImage;
-    private EditText newPostDesc;
+    private ImageView newPostImage, newPostImageFac;
+    private EditText newPostDesc, formDewasa, formAnak, formFacial, formSpa ;
     private Button newPostBtn, newPostBtnSpa, newPostBtnfac, upDefault, upSpa, upFacial;
     private ConstraintLayout halRambut, halSpa, halFacial;
 
     private Uri postImageUri = null;
+    private Uri postImageUriFac = null;
 
     private ProgressBar newPostProgress;
 
     private StorageReference storageReference;
-    private FirebaseFirestore firebaseFirestore;
+    private DatabaseReference reference, referenceX;
     private FirebaseAuth firebaseAuth;
 
     private String current_user_id;
 
     private Bitmap compressedImageFile;
-    private CheckBox Dewasa, Anak;
-    private TextView lokasiDirect, pilka;
+    private TextView lokasiDirect, terditeksi;
 
     LocationManager locationManager;
 
@@ -91,6 +91,8 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         setContentView(R.layout.activity_new_post);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+        reference = FirebaseDatabase.getInstance().getReference("Salon_Post");
+        referenceX = FirebaseDatabase.getInstance().getReference("Bank_Data");
         firebaseAuth = FirebaseAuth.getInstance();
 
         current_user_id = firebaseAuth.getCurrentUser().getUid();
@@ -104,7 +106,13 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         halRambut = findViewById(R.id.hal_rambut);
         halSpa = findViewById(R.id.hal_spa);
 
+        formDewasa = findViewById(R.id.hargaDewasa);
+        formAnak = findViewById(R.id.hargaAnak);
+        formSpa = findViewById(R.id.hargaSpa);
+        formFacial = findViewById(R.id.hargaFacial);
+
         newPostImage = findViewById(R.id.new_post_image);
+        newPostImageFac = findViewById(R.id.new_post_image_facial);
         newPostBtn = findViewById(R.id.post_btn);
         newPostBtnSpa = findViewById(R.id.post_btn_spa);
         newPostBtnfac = findViewById(R.id.post_btn_facial);
@@ -113,11 +121,8 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         upFacial = findViewById(R.id.up_facial);
         newPostProgress = findViewById(R.id.new_post_progress);
 
-        Dewasa = findViewById(R.id.cekDewasa);
-        Anak = findViewById(R.id.cekAnak);
-
         lokasiDirect = findViewById(R.id.lokasiDirect);
-        pilka = findViewById(R.id.pilka);
+        terditeksi = findViewById(R.id.terditek);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         upDefault.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +155,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
         if (ContextCompat.checkSelfPermission(NewPostActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(NewPostActivity.this, "Lokasi anda harus terditeksi oleh aplikasi!",
+            Toast.makeText(NewPostActivity.this, "Butuh Perijinan Penyimpanan!",
                     Toast.LENGTH_SHORT).show();
         } else {
             requestStoragePermission();
@@ -186,140 +191,295 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             }
         });
 
-        newPostBtn.setOnClickListener(new View.OnClickListener() {
+        newPostImageFac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String desc = newPostDesc.getText().toString();
-                final String lokdek = lokasiDirect.getText().toString();
-
-                if(!TextUtils.isEmpty(desc) && (!TextUtils.isEmpty(lokdek)) && postImageUri != null){
-
-                    newPostProgress.setVisibility(View.VISIBLE);
-
-                    final String randomName = UUID.randomUUID().toString();
-
-                    File newImageFile = new File(postImageUri.getPath());
-                    try {
-
-                        compressedImageFile = new Compressor(NewPostActivity.this)
-                                .setMaxHeight(720)
-                                .setMaxWidth(720)
-                                .setQuality(50)
-                                .compressToBitmap(newImageFile);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] imageData = baos.toByteArray();
-
-//                    UploadTask filePath = storageReference.child("post_images").child(randomName + ".jpg").putBytes(imageData);
-
-                    Uri file = Uri.fromFile(new File(String.valueOf(postImageUri.getPath())));
-                    final StorageReference riversRef = storageReference.child("post_images").child(randomName + ".jpg");
-                    final UploadTask uploadTask = riversRef.putFile(file);
-
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                @Override
-                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                    if (!task.isSuccessful()) {
-                                        throw task.getException();
-                                    }
-
-
-                                    return riversRef.getDownloadUrl();
-                                }
-                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                private static final String TAG = "Done";
-
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        Uri downloadUri = task.getResult();
-
-                                        Log.d(TAG, "onComplete: Url: "+ downloadUri.toString());
-                                        Map<String, Object> postMap = new HashMap<>();
-                                        postMap.put("image_url", downloadUri.toString());
-                                        postMap.put("desc", desc);
-                                        postMap.put("user_id", current_user_id);
-                                        postMap.put("timestamp", ServerValue.TIMESTAMP);
-                                        postMap.put("lokasi_direct", lokdek);
-
-                                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Salon_Post").child(current_user_id);
-                                        reference.setValue(postMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                if(task.isSuccessful()){
-
-                                                    Toast.makeText(NewPostActivity.this, "Post was added", Toast.LENGTH_LONG).show();
-                                                    Intent mainIntent = new Intent(NewPostActivity.this, MainActivity.class);
-                                                    startActivity(mainIntent);
-                                                    finish();
-
-                                                } else {
-
-
-                                                }
-
-                                                newPostProgress.setVisibility(View.INVISIBLE);
-
-                                            }
-                                        });
-                                    } else {
-                                        newPostProgress.setVisibility(View.INVISIBLE);
-                                    }
-                                }
-                            });
-
-                        }
-                    });
-                }
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setMinCropResultSize(512, 512)
+                        .setAspectRatio(1, 1)
+                        .start(NewPostActivity.this);
 
             }
         });
 
+        newPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newPostProgress.setVisibility(View.VISIBLE);
+                addHarga();
+            }
+        });
+
+        newPostBtnSpa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                addPotoSpa();
+
+            }
+        });
+
+        newPostBtnfac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                addPotoFac();
+
+            }
+        });
 
     }
 
-    public void onCekClicked(View view) {
-        // Is the button now checked?
-           switch(view.getId()) {
-            case R.id.cekDewasa:
-                if (Anak.isChecked()){
-                    Anak.setChecked(false);
-                    String txtDewasa = Dewasa.getText().toString();
-                    Toast.makeText(this, txtDewasa, Toast.LENGTH_SHORT).show();
-                    pilka.setText(txtDewasa);
-                }
-            else
-                    Dewasa.setChecked(true);
-                break;
+    private void addPotoFac() {
 
-            case R.id.cekAnak:
-                if (Dewasa.isChecked()){
-                   Dewasa.setChecked(false);
-                    String txtAnak = Anak.getText().toString();
-                    Toast.makeText(this, txtAnak, Toast.LENGTH_SHORT).show();
-                    pilka.setText(txtAnak);
+        if(postImageUriFac != null){
+
+            newPostProgress.setVisibility(View.VISIBLE);
+
+            final String randomName = UUID.randomUUID().toString();
+
+            File newImageFile = new File(postImageUriFac.getPath());
+            try {
+
+                compressedImageFile = new Compressor(NewPostActivity.this)
+                        .setMaxHeight(720)
+                        .setMaxWidth(720)
+                        .setQuality(50)
+                        .compressToBitmap(newImageFile);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageData = baos.toByteArray();
+
+//                    UploadTask filePath = storageReference.child("post_images").child(randomName + ".jpg").putBytes(imageData);
+
+            Uri file = Uri.fromFile(new File(String.valueOf(postImageUriFac.getPath())));
+            final StorageReference riversRef = storageReference.child("post_images").child(randomName + ".jpg");
+            final UploadTask uploadTask = riversRef.putFile(file);
+
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+
+                            return riversRef.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        private static final String TAG = "Done";
+
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+
+                                Log.d(TAG, "onComplete: Url: "+ downloadUri.toString());
+                                String id = reference.push().getKey();
+                                DatabaseReference hopperRef = reference.child(current_user_id);
+                                final DatabaseReference hopperRefX = referenceX.child(current_user_id).child("Gambar_Facial").child(id);
+                                final Map<String, Object> postMap = new HashMap<>();
+                                postMap.put("image_fac", downloadUri.toString());
+                                postMap.put("user_id", current_user_id);
+//                                    postMap.put("timestamp", ServerValue.TIMESTAMP);
+
+                                hopperRef.updateChildren(postMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        if(task.isSuccessful()){
+
+                                            hopperRefX.setValue(postMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Toast.makeText(NewPostActivity.this, "Update Data Selesai", Toast.LENGTH_LONG).show();
+                                                    Intent mainIntent = new Intent(NewPostActivity.this, MainActivity.class);
+                                                    startActivity(mainIntent);
+                                                    finish();
+
+                                                }
+                                            });
+
+                                        } else {
+
+
+                                        }
+
+                                        newPostProgress.setVisibility(View.INVISIBLE);
+
+                                    }
+                                });
+                            } else {
+                                newPostProgress.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+    }
+
+        private  void  addPotoSpa(){
+
+            if(postImageUri != null){
+
+                newPostProgress.setVisibility(View.VISIBLE);
+
+                final String randomName = UUID.randomUUID().toString();
+
+                File newImageFile = new File(postImageUri.getPath());
+                try {
+
+                    compressedImageFile = new Compressor(NewPostActivity.this)
+                            .setMaxHeight(720)
+                            .setMaxWidth(720)
+                            .setQuality(50)
+                            .compressToBitmap(newImageFile);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-            else
-                Anak.setChecked(true);
-                break;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageData = baos.toByteArray();
+
+//                    UploadTask filePath = storageReference.child("post_images").child(randomName + ".jpg").putBytes(imageData);
+
+                Uri file = Uri.fromFile(new File(String.valueOf(postImageUri.getPath())));
+                final StorageReference riversRef = storageReference.child("post_images").child(randomName + ".jpg");
+                final UploadTask uploadTask = riversRef.putFile(file);
+
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
+                                }
+
+
+                                return riversRef.getDownloadUrl();
+                            }
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            private static final String TAG = "Done";
+
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+
+                                    Log.d(TAG, "onComplete: Url: "+ downloadUri.toString());
+                                    String id = reference.push().getKey();
+                                    DatabaseReference hopperRef = reference.child(current_user_id);
+                                    final DatabaseReference hopperRefX = referenceX.child(current_user_id).child("Gambar_Spa").child(id);
+                                    final Map<String, Object> postMap = new HashMap<>();
+                                    postMap.put("image_spa", downloadUri.toString());
+                                    postMap.put("user_id", current_user_id);
+//                                    postMap.put("timestamp", ServerValue.TIMESTAMP);
+
+                                    hopperRef.updateChildren(postMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            if(task.isSuccessful()){
+
+                                                hopperRefX.setValue(postMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Toast.makeText(NewPostActivity.this, "Update Data Selesai", Toast.LENGTH_LONG).show();
+                                                        Intent mainIntent = new Intent(NewPostActivity.this, MainActivity.class);
+                                                        startActivity(mainIntent);
+                                                        finish();
+
+                                                    }
+                                                });
+
+                                            } else {
+
+
+                                            }
+
+                                            newPostProgress.setVisibility(View.INVISIBLE);
+
+                                        }
+                                    });
+                                } else {
+                                    newPostProgress.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
 
         }
+
+      private void addHarga() {
+        newPostProgress.setVisibility(View.VISIBLE);
+
+        String anak = formAnak.getText().toString().trim();
+        String dewasa = formDewasa.getText().toString().trim();
+        String spa = formSpa.getText().toString().trim();
+        String facial = formFacial.getText().toString().trim();
+        final String lokdek = lokasiDirect.getText().toString();
+
+        if (!TextUtils.isEmpty(anak) &&
+            !TextUtils.isEmpty(dewasa) &&
+            ! TextUtils.isEmpty(spa) &&
+            ! TextUtils.isEmpty(facial) &&
+            ! TextUtils.isEmpty(lokdek)){
+
+            String id = reference.push().getKey();
+
+            DatabaseReference hopperRefX = referenceX.child(current_user_id).child("Harga");
+            DatabaseReference hopperRef = reference.child(current_user_id);
+            Map<String, Object> hopperUpdates = new HashMap<>();
+            hopperUpdates.put("anak", anak);
+            hopperUpdates.put("dewasa", dewasa);
+            hopperUpdates.put("spa", spa);
+            hopperUpdates.put("facial", facial);
+            hopperUpdates.put("lokasi_direct", lokdek);
+
+            hopperRefX.setValue(hopperUpdates);
+            hopperRef.updateChildren(hopperUpdates);
+
+
+            Toast.makeText(NewPostActivity.this, "Update Data Selesai", Toast.LENGTH_LONG).show();
+
+        } else {
+
+            Toast.makeText(NewPostActivity.this, "Update Data Gagal", Toast.LENGTH_LONG).show();
+
+        }
+        Intent mainIntent = new Intent(NewPostActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
     }
 
 
@@ -348,6 +508,8 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, GPS_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
         }
     }
 
@@ -371,7 +533,9 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             if (resultCode == RESULT_OK) {
 
                 postImageUri = result.getUri();
+                postImageUriFac = result.getUri();
                 newPostImage.setImageURI(postImageUri);
+                newPostImageFac.setImageURI(postImageUriFac);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
 
@@ -388,6 +552,10 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             lokasiDirect.setText("https://www.google.com/maps/dir/Current+Location/"+latitude+","+longitude);
+            lokasiDirect.setVisibility(View.INVISIBLE);
+            terditeksi.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(NewPostActivity.this, "Maaf Lokasi Tidak Terditeksi", Toast.LENGTH_LONG).show();
         }
     }
 

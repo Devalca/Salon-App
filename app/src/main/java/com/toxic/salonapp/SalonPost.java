@@ -8,16 +8,47 @@ public class SalonPost {
     private String postKey;
     private String id;
     private String image_url;
+    private String image_fac;
+    private String image_spa;
     private String desc;
+    private String nama_salon;
+    private String nomor_wa;
     private String lokasi_direct;
+    private String dewasa;
+    private String email;
+    private String anak;
+    private String spa;
+    private String facial;
     private Object timestamp;
 
 
-    public SalonPost(String lokasi_direct, String id, String image_url, String desc) {
+    public SalonPost(
+            String nama_salon,
+            String nomor_wa,
+            String email,
+            String lokasi_direct,
+            String id,
+            String image_url,
+            String image_fac,
+            String image_spa,
+            String desc,
+            String anak,
+            String dewasa,
+            String spa,
+            String facial) {
         this.id = id;
         this.image_url = image_url;
+        this.image_fac = image_fac;
+        this.image_spa = image_spa;
         this.desc = desc;
         this.lokasi_direct = lokasi_direct;
+        this.anak = anak;
+        this.dewasa = dewasa;
+        this.spa = spa;
+        this.email = email;
+        this.facial = facial;
+        this.nama_salon = nama_salon;
+        this.nomor_wa = nomor_wa;
         this.timestamp = ServerValue.TIMESTAMP;
     }
 
@@ -40,6 +71,32 @@ public class SalonPost {
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNama_salon() {
+        return nama_salon;
+    }
+
+    public void setNama_salon(String nama_salon) {
+        this.nama_salon = nama_salon;
+    }
+
+    public String getNomor_wa() {
+        return nomor_wa;
+    }
+
+    public void setNomorwa(String nomor_wa) {
+        this.nomor_wa = nomor_wa;
+    }
+
+
+
     public String getLokasi_direct(){
         return lokasi_direct;
     }
@@ -56,12 +113,60 @@ public class SalonPost {
         this.image_url = image_url;
     }
 
+    public String getImage_fac() {
+        return image_fac;
+    }
+
+    public void setImage_fac(String image_fac) {
+        this.image_fac = image_fac;
+    }
+
+    public String getImage_spa() {
+        return image_spa;
+    }
+
+    public void setImage_spa(String image_spa) {
+        this.image_spa = image_spa;
+    }
+
     public String getDesc() {
         return desc;
     }
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getDewasa(){
+        return dewasa;
+    }
+
+    public void setDewasa(){
+        this.dewasa = dewasa;
+    }
+
+    public String getAnak(){
+        return anak;
+    }
+
+    public void setAnak(){
+        this.anak = anak;
+    }
+
+    public String getSpa(){
+        return spa;
+    }
+
+    public void setSpa(){
+        this.spa = spa;
+    }
+
+    public String getFacial(){
+        return facial;
+    }
+
+    public void setFacial(){
+        this.facial = facial;
     }
 
     public Object getTimeStamp() {

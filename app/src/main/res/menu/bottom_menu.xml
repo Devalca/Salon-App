@@ -6,8 +6,8 @@
         android:id="@+id/bottom_action_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/bottom_home_text" />
-    <item
-        android:id="@+id/bottom_action_account"
-        android:icon="@drawable/ic_person_black_24dp"
-        android:title="@string/bottom_ac_text" />
+    <!--<item-->
+        <!--android:id="@+id/bottom_action_account"-->
+        <!--android:icon="@drawable/ic_person_black_24dp"-->
+        <!--android:title="@string/bottom_ac_text" />-->
 </menu>

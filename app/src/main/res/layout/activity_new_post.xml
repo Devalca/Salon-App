@@ -23,42 +23,80 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/up_spa">
 
-        <TextView
-            android:id="@+id/pilka"
+        <EditText
+            android:id="@+id/hargaFacial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="99dp"
-            android:layout_marginEnd="43dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editHarga"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <CheckBox
-            android:id="@+id/cekDewasa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:onClick="onCekClicked"
-            android:text="Dewasa"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Masukan Harga Facial"
+            android:inputType="number"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:text="Harga Facial"
+            android:textColor="#090808"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hargaSpa" />
+
+        <EditText
+            android:id="@+id/hargaSpa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Masukan Harga Spa"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Harga Spa"
+            android:textColor="#090808"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hargaDewasa" />
+
+        <EditText
+            android:id="@+id/hargaAnak"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="11dp"
+            android:ems="10"
+            android:hint="Anak-Anak"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/hargaDewasa"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <CheckBox
-            android:id="@+id/cekAnak"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/hargaDewasa"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:checked="false"
-            android:onClick="onCekClicked"
-            android:text="Anak-Anak"
-            app:layout_constraintStart_toEndOf="@+id/cekDewasa"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Dewasa"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
@@ -67,35 +105,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Harga Potong Rambut"
+            android:textColor="#090808"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/editHarga"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:ems="10"
-            android:hint="Masukan Harga"
-            android:inputType="number"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cekDewasa" />
 
         <Button
             android:id="@+id/post_btn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="#FF6C22"
             android:padding="16dp"
             android:text="@string/update_data"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editHarga" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -108,6 +135,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/up_default">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Spa Activity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/new_post_image"
@@ -149,6 +186,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/up_default">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Facial Activity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/new_post_image_facial"
@@ -198,45 +245,69 @@
         android:id="@+id/lokasiDirect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="134dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_post_progress" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/up_spa"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="#FF6C22"
         android:text="spa"
         android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/up_default"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lokasiDirect" />
+        app:layout_constraintTop_toBottomOf="@+id/new_post_progress" />
 
     <Button
         android:id="@+id/up_facial"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#FF6C22"
         android:text="Facial"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lokasiDirect" />
+        app:layout_constraintStart_toEndOf="@+id/up_default"
+        app:layout_constraintTop_toBottomOf="@+id/new_post_progress" />
 
     <Button
         android:id="@+id/up_default"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#FF6C22"
         android:text="Default"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toStartOf="@+id/up_facial"
         app:layout_constraintStart_toEndOf="@+id/up_spa"
-        app:layout_constraintTop_toBottomOf="@+id/lokasiDirect" />
+        app:layout_constraintTop_toBottomOf="@+id/new_post_progress" />
+
+    <TextView
+        android:id="@+id/terditek"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="Lokasi Anda Terditeksi"
+        android:textAlignment="center"
+        android:textColor="#FC0000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/lokasiDirect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

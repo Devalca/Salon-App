@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
                             replaceFragment(homeFragment, currentFragment);
                             return true;
 
-                        case R.id.bottom_action_account:
-
-                            replaceFragment(accountFragment, currentFragment);
-                            return true;
+//                        case R.id.bottom_action_account:
+//
+//                            replaceFragment(accountFragment, currentFragment);
+//                            return true;
 
                         default:
                             return false;
@@ -126,12 +126,12 @@ public class MainActivity extends AppCompatActivity {
                 logOut();
                 return true;
 
-            case R.id.action_settings_btn:
-
-                Intent settingsIntent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(settingsIntent);
-
-                return true;
+//            case R.id.action_settings_btn:
+//
+//                Intent settingsIntent = new Intent(MainActivity.this, MainActivity.class);
+//                startActivity(settingsIntent);
+//
+//                return true;
 
             default:
                 return false;

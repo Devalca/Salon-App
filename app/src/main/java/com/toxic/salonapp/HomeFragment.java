@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,13 +31,14 @@ public class HomeFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    FirebaseAuth firebaseAuth;
 
     private OnFragmentInteractionListener mListener;
 
     RecyclerView postRecyclerView ;
     SalonAdapter postAdapter ;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference ;
+    DatabaseReference databaseReference;
     List<SalonPost> postList;
 
     public HomeFragment() {
@@ -76,6 +79,7 @@ public class HomeFragment extends Fragment {
         postRecyclerView  = fragmentView.findViewById(R.id.postRV);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         postRecyclerView.setHasFixedSize(true);
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Salon_Post");
         return fragmentView ;

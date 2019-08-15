@@ -37,10 +37,9 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.salonTitle.setText(mData.get(position).getUser_id());
-        holder.salonDesc.setText(mData.get(position).getDesc());
-        holder.blogDate.setText(mData.get(position).getLokasi_direct());
-        Glide.with(mContext).load(mData.get(position).getImage_url()).into(holder.blogImage);
+        holder.salonTitle.setText(mData.get(position).getNama_salon());
+        holder.blogNo.setText(mData.get(position).getNomor_wa());
+        Glide.with(mContext).load(mData.get(position).getImage_fac()).into(holder.blogImage);
 
     }
 
@@ -51,18 +50,16 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView salonTitle;
+        TextView salonTitle, blogNo, hargaAnak, hargaDewasa, hargaSpa;
         ImageView blogImage;
-        TextView salonDesc;
-        TextView blogDate;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             salonTitle = itemView.findViewById(R.id.blog_user_name);
+            blogNo = itemView.findViewById(R.id.blog_date);
             blogImage = itemView.findViewById(R.id.blog_image);
-            salonDesc = itemView.findViewById(R.id.blog_desc);
-            blogDate = itemView.findViewById(R.id.blog_date);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,13 +67,20 @@ public class SalonAdapter extends RecyclerView.Adapter<SalonAdapter.MyViewHolder
                     Intent postDetailActivity = new Intent(mContext,PostDetailActivity.class);
                     int position = getAdapterPosition();
 
-                    postDetailActivity.putExtra("title",mData.get(position).getUser_id());
-                    postDetailActivity.putExtra("image_url",mData.get(position).getImage_url());
-                    postDetailActivity.putExtra("desc",mData.get(position).getDesc());
+                    postDetailActivity.putExtra("title", mData.get(position).getNama_salon());
+                    postDetailActivity.putExtra("dewasa", mData.get(position).getDewasa());
+                    postDetailActivity.putExtra("anak", mData.get(position).getAnak());
+                    postDetailActivity.putExtra("spa", mData.get(position).getSpa());
+                    postDetailActivity.putExtra("fac", mData.get(position).getFacial());
+                    postDetailActivity.putExtra("nomor_wa", mData.get(position).getNomor_wa());
+                    postDetailActivity.putExtra("image_fac",mData.get(position).getImage_fac());
+                    postDetailActivity.putExtra("image_spa",mData.get(position).getImage_spa());
                     postDetailActivity.putExtra("loklok", mData.get(position).getLokasi_direct());
-                    postDetailActivity.putExtra("postKey",mData.get(position).getPostKey());
-                    long timestamp  = (long) mData.get(position).getTimeStamp();
-                    postDetailActivity.putExtra("timestamp",timestamp) ;
+
+//                    postDetailActivity.putExtra("desc",mData.get(position).getDesc());
+//                    postDetailActivity.putExtra("postKey",mData.get(position).getPostKey());
+//                    long timestamp  = (long) mData.get(position).getTimeStamp();
+//                    postDetailActivity.putExtra("timestamp",timestamp) ;
                     mContext.startActivity(postDetailActivity);
 
                 }

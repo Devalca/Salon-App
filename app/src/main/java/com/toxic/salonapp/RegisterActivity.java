@@ -50,15 +50,15 @@ public class RegisterActivity extends AppCompatActivity {
         reg_name_field = findViewById(R.id.reg_name);
         reg_wa_field = findViewById(R.id.reg_wa);
         reg_btn = findViewById(R.id.reg_btn);
-        reg_login_btn = findViewById(R.id.reg_login_btn);
+//      reg_login_btn = findViewById(R.id.reg_login_btn);
         reg_progress = findViewById(R.id.reg_progress);
 
-        reg_login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//      reg_login_btn.setOnClickListener(new View.OnClickListener() {
+//           @Override
+//            public void onClick(View v) {
+//              finish();
+//            }
+//      });
 
         reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,21 +98,29 @@ public class RegisterActivity extends AppCompatActivity {
                             String userid = firebaseUser.getUid();
 
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
-                            HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("id", userid);
+                            final DatabaseReference referenceX = FirebaseDatabase.getInstance().getReference("Salon_Post").child(userid);
+
+
+                            final HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("email", email);
                             hashMap.put("nama_salon", nama_salon);
-                            hashMap.put("nomor_wa", nomor_wa);
-                            hashMap.put("search", nama_salon.toLowerCase());
+                            hashMap.put("nomor_wa", "62"+nomor_wa);
+//                          hashMap.put("search", nama_salon.toLowerCase());
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                        finish();
+                                        referenceX.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
+                                                finish();
+
+                                            }
+                                        });
                                     } else {
 
                                         String errorMessage = task.getException().getMessage();
