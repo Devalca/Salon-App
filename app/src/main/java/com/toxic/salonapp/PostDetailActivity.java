@@ -1,8 +1,13 @@
 package com.toxic.salonapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +15,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +38,7 @@ public class PostDetailActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
     private Toolbar mainToolbar;
-    private Button mapButton, waButton;
+    private ImageButton mapButton, waButton;
 
 
     @Override
@@ -99,20 +105,24 @@ public class PostDetailActivity extends AppCompatActivity {
         PostKey = getIntent().getExtras().getString("postKey");
         Log.d(TAG, "onComplete: Url: "+ postTitle);
 
-        if(txtPostDesc != null){
+        String postLok = postDescription;
+        if(postLok != null){
             redLok.setVisibility(View.VISIBLE);
+            mapButton.setEnabled(true);
         } else {
-            Toast.makeText(PostDetailActivity.this, "Maaf Lokasi Tidak Terditeksi", Toast.LENGTH_LONG).show();
+            redLok.setVisibility(View.INVISIBLE);
+            Toast.makeText(PostDetailActivity.this, "Maaf Lokasi Tidak Tersedia", Toast.LENGTH_LONG).show();
+            mapButton.setEnabled(false);
         }
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(postDescription));
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
+                String postLok = postDescription;
+                if(postLok != null){
+                    openDialogsMap();
+                } else {
+                    Toast.makeText(PostDetailActivity.this, "Maaf Lokasi Tidak Tersedia", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -142,12 +152,37 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
-    private String timestampToString(long time) {
-
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(time);
-        String date = DateFormat.format("dd-MM-yyyy",calendar).toString();
-        return date;
-
+    private void openDialogsMap() {
+        new AlertDialog.Builder(this)
+                .setTitle("Google Map Direction")
+                .setMessage("Apakah Anda Ingin Membuka Google Map?")
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String postDescription = getIntent().getExtras().getString("loklok");
+                        txtPostDesc.setText(postDescription);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(postDescription));
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        }
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
+
+//    private String timestampToString(long time) {
+//
+//        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+//        calendar.setTimeInMillis(time);
+//        String date = DateFormat.format("dd-MM-yyyy",calendar).toString();
+//        return date;
+//
+//    }
 }

@@ -78,6 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Silahkan Lengkapi Data!", Toast.LENGTH_SHORT).show();
                 } else if (pass.length() < 6) {
                     Toast.makeText(RegisterActivity.this, "Password minimal 6 karakter!", Toast.LENGTH_SHORT).show();
+                } else if (nomor_wa.length() <= 11) {
+                    Toast.makeText(RegisterActivity.this, "0 Sudah di ganti dengan kode Negara silahkan hapus!", Toast.LENGTH_SHORT).show();
                 } else {
                     register(email, nama_salon, nomor_wa, pass);
                 }
@@ -130,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            Toast.makeText(RegisterActivity.this, "You can't register woth this email or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Maaf Anda Tidak Bisa Daftar dengan Password dan Email ini", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

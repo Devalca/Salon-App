@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     RecyclerView postRecyclerView ;
     SalonAdapter postAdapter ;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, databaseReferenceX;
     List<SalonPost> postList;
 
     public HomeFragment() {
@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Salon_Post");
+        databaseReferenceX = firebaseDatabase.getReference("Salon_Post");
         return fragmentView ;
     }
 

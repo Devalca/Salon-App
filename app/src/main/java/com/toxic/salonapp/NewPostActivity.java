@@ -65,7 +65,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
     private Toolbar newPostToolbar;
 
     private ImageView newPostImage, newPostImageFac;
-    private EditText newPostDesc, formDewasa, formAnak, formFacial, formSpa ;
+    private EditText catH, newPostDesc, formDewasa, formAnak, formFacial, formSpa ;
     private Button newPostBtn, newPostBtnSpa, newPostBtnfac, upDefault, upSpa, upFacial;
     private ConstraintLayout halRambut, halSpa, halFacial;
 
@@ -177,6 +177,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
             onLocationChanged(location);
         }
+
 
         newPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -459,6 +460,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
             DatabaseReference hopperRefX = referenceX.child(current_user_id).child("Harga");
             DatabaseReference hopperRef = reference.child(current_user_id);
+
             Map<String, Object> hopperUpdates = new HashMap<>();
             hopperUpdates.put("anak", anak);
             hopperUpdates.put("dewasa", dewasa);
@@ -548,7 +550,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location!= null){
+        if(location != null){
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             lokasiDirect.setText("https://www.google.com/maps/dir/Current+Location/"+latitude+","+longitude);
