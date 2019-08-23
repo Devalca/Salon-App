@@ -81,7 +81,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
     private String current_user_id;
 
     private Bitmap compressedImageFile;
-    private TextView lokasiDirect, terditeksi;
+    private TextView lokasiDirect, terditeksi, txtLong, txtLat;
 
     LocationManager locationManager;
 
@@ -123,6 +123,8 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
         lokasiDirect = findViewById(R.id.lokasiDirect);
         terditeksi = findViewById(R.id.terditek);
+        txtLat = findViewById(R.id.textLat);
+        txtLong = findViewById(R.id.textLong);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         upDefault.setOnClickListener(new View.OnClickListener() {
@@ -448,6 +450,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         String dewasa = formDewasa.getText().toString().trim();
         String spa = formSpa.getText().toString().trim();
         String facial = formFacial.getText().toString().trim();
+        String latitude = txtLat.getText().toString().trim();
         final String lokdek = lokasiDirect.getText().toString();
 
         if (!TextUtils.isEmpty(anak) &&
@@ -467,6 +470,7 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             hopperUpdates.put("spa", spa);
             hopperUpdates.put("facial", facial);
             hopperUpdates.put("lokasi_direct", lokdek);
+            hopperUpdates.put("latitude", latitude);
 
             hopperRefX.setValue(hopperUpdates);
             hopperRef.updateChildren(hopperUpdates);
@@ -554,8 +558,9 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             lokasiDirect.setText("https://www.google.com/maps/dir/Current+Location/"+latitude+","+longitude);
-            lokasiDirect.setVisibility(View.INVISIBLE);
-            terditeksi.setVisibility(View.VISIBLE);
+//            txtLat.setText((int) latitude);
+//            lokasiDirect.setVisibility(View.INVISIBLE);
+//            terditeksi.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(NewPostActivity.this, "Maaf Lokasi Tidak Terditeksi", Toast.LENGTH_LONG).show();
         }

@@ -44,7 +44,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent newPostIntent = new Intent(UserActivity.this, ListSalonActivity.class);
+                Intent newPostIntent = new Intent(UserActivity.this, MapsActivity.class);
                 startActivity(newPostIntent);
 
             }

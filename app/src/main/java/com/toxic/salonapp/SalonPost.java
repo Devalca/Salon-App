@@ -19,6 +19,8 @@ public class SalonPost {
     private String anak;
     private String spa;
     private String facial;
+    public double latitude;
+    public double longitude;
     private Object timestamp;
 
 
@@ -35,6 +37,8 @@ public class SalonPost {
             String anak,
             String dewasa,
             String spa,
+            double latitude,
+            double longitude,
             String facial) {
         this.id = id;
         this.image_url = image_url;
@@ -49,6 +53,8 @@ public class SalonPost {
         this.facial = facial;
         this.nama_salon = nama_salon;
         this.nomor_wa = nomor_wa;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.timestamp = ServerValue.TIMESTAMP;
     }
 
@@ -103,6 +109,22 @@ public class SalonPost {
 
     public void setLokasi_direct(){
         this.lokasi_direct = lokasi_direct;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public String getImage_url() {
