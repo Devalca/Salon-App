@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "done" ;
@@ -24,6 +27,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseReference mDatabase;
     private DatabaseReference refDatabase;
     ChildEventListener mChildEventListener;
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +55,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
 
-        LatLng  tilok = new LatLng(-6.8850987, 106.7766293);
+        LatLng tilok = new LatLng(-6.8850987, 106.7766293);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(tilok));
-        mMap.setMinZoomPreference(15.0f);
+        mMap.setMinZoomPreference(10.0f);
         mMap.setMaxZoomPreference(15.0f);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 

@@ -24,7 +24,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -37,8 +36,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,9 +47,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -157,8 +152,6 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
 
         if (ContextCompat.checkSelfPermission(NewPostActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(NewPostActivity.this, "Butuh Perijinan Penyimpanan!",
-                    Toast.LENGTH_SHORT).show();
         } else {
             requestStoragePermission();
         }
@@ -451,12 +444,17 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         String spa = formSpa.getText().toString().trim();
         String facial = formFacial.getText().toString().trim();
         String latitude = txtLat.getText().toString().trim();
+        String longitude = txtLong.getText().toString().trim();
+        double dLat = Double.parseDouble(latitude);
+        double dLong = Double.parseDouble(longitude);
         final String lokdek = lokasiDirect.getText().toString();
 
         if (!TextUtils.isEmpty(anak) &&
             !TextUtils.isEmpty(dewasa) &&
             ! TextUtils.isEmpty(spa) &&
             ! TextUtils.isEmpty(facial) &&
+            ! TextUtils.isEmpty(latitude) &&
+            ! TextUtils.isEmpty(longitude) &&
             ! TextUtils.isEmpty(lokdek)){
 
             String id = reference.push().getKey();
@@ -470,7 +468,8 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             hopperUpdates.put("spa", spa);
             hopperUpdates.put("facial", facial);
             hopperUpdates.put("lokasi_direct", lokdek);
-            hopperUpdates.put("latitude", latitude);
+            hopperUpdates.put("latitude", dLat);
+            hopperUpdates.put("longitude", dLong);
 
             hopperRefX.setValue(hopperUpdates);
             hopperRef.updateChildren(hopperUpdates);
@@ -514,8 +513,6 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, GPS_PERMISSION_CODE);
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
         }
     }
 
@@ -558,9 +555,10 @@ public class NewPostActivity extends AppCompatActivity implements LocationListen
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             lokasiDirect.setText("https://www.google.com/maps/dir/Current+Location/"+latitude+","+longitude);
-//            txtLat.setText((int) latitude);
-//            lokasiDirect.setVisibility(View.INVISIBLE);
-//            terditeksi.setVisibility(View.VISIBLE);
+            txtLat.setText(""+latitude);
+            txtLong.setText(""+longitude);
+            lokasiDirect.setVisibility(View.INVISIBLE);
+            terditeksi.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(NewPostActivity.this, "Maaf Lokasi Tidak Terditeksi", Toast.LENGTH_LONG).show();
         }

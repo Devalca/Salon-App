@@ -13,11 +13,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.toxic.salonapp.LodMaps.MapsLoad;
 
 public class UserActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1 ;
-    private Button mButton, login_reg_btn;
+    private Button mButton, cButton, login_reg_btn;
     private FirebaseAuth mAuth;
 
 
@@ -27,8 +28,11 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         mAuth = FirebaseAuth.getInstance();
-
+        mButton = findViewById(R.id.btn_list_map);
+        cButton = findViewById(R.id.btn_cari_map);
         login_reg_btn = findViewById(R.id.login_reg_btn);
+
+
         login_reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,12 +43,21 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        mButton = findViewById(R.id.btn_list_map);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent newPostIntent = new Intent(UserActivity.this, MapsActivity.class);
+                Intent newPostIntent = new Intent(UserActivity.this, ListSalonActivity.class);
+                startActivity(newPostIntent);
+
+            }
+        });
+
+        cButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent newPostIntent = new Intent(UserActivity.this, MapsLoad.class);
                 startActivity(newPostIntent);
 
             }
